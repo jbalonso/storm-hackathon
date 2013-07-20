@@ -17,7 +17,12 @@ import storm.trident.operation.TridentCollector;
 import storm.trident.testing.MemoryMapState;
 import storm.trident.tuple.TridentTuple;
 import storm.trident.Stream;
-//import org.hackreduce.storm.example.riak.TwitterKafka;
+import storm.kafka.trident.TridentKafkaConfig;
+import org.hackreduce.storm.example.common.Common;
+import backtype.storm.spout.SchemeAsMultiScheme;
+import storm.kafka.StringScheme;
+import static org.hackreduce.storm.HackReduceStormSubmitter.teamPrefix;
+import storm.kafka.trident.TransactionalTridentKafkaSpout;
 
 
 public class TridentQuake {
@@ -118,13 +123,26 @@ public class TridentQuake {
 		
 	    TridentTopology topology = new TridentTopology();        
 
-        TridentState wordCounts = TwitterKafka.buildSpout(topology)
+		TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
+            Common.getKafkaHosts(),
+            //ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
+  		   //8, // number of partitions per host
+  		  "twitter_gnip-0" // topic to read from
+        );
+        spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
+        spoutConfig.forceStartOffsetTime(-2);
+
+
+		
+        TridentState wordCounts = topology.newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
+            .parallelismHint(6)
+            .each(new Fields("str"), new TwitterKafka.ExtractData(), new Fields("id", "content", "published"))
                 .each(new Fields("tweet"), new Split(), new Fields("word"))
                 .groupBy(new Fields("near", "word"))
                 .persistentAggregate(new MemoryMapState.Factory(),
                                      new Count(), new Fields("count"))
                 .parallelismHint(16);
-        TridentState tweetCounts = raw_tweets
+        TridentState tweetCounts = topology.newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
                 .groupBy(new Fields("near"))
                 .persistentAggregate(new MemoryMapState.Factory(),
                                      new Count(), new Fields("count"))
