@@ -1,4 +1,5 @@
-package org.hackreduce.storm.example.riak;
+package shakeandquake;
+import org.hackreduce.storm.example.riak.RiakBackingMap;
 
 import backtype.storm.Config;
 import backtype.storm.generated.AlreadyAliveException;
