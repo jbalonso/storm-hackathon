@@ -19,9 +19,18 @@ import storm.trident.operation.BaseFunction;
 import storm.trident.operation.CombinerAggregator;
 import storm.trident.operation.TridentCollector;
 import storm.trident.tuple.TridentTuple;
-
 import static org.hackreduce.storm.HackReduceStormSubmitter.teamPrefix;
-
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.io.StringReader;
+import com.google.common.io.Files;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 public class TwitterKafka {
 	
 	public static class ExtractData extends BaseFunction {
@@ -31,9 +40,11 @@ public class TwitterKafka {
 	        @Override
 	        public void execute(TridentTuple tuple, TridentCollector collector) {
 
-	            String[] components = tuple.getString(0).split(",");
-	
-				Tweet.parseXml(entryXml);
+	            String entryXml = tuple.getString(0);
+	            XPathFactory xpathFactory = XPathFactory.newInstance();
+	            XPath xpath = xpathFactory.newXPath();
+
+	            InputSource source = new InputSource(new StringReader(entryXml));
 				        try {
 				            Document doc = (Document) xpath.evaluate("/", source, XPathConstants.NODE);
 
@@ -41,26 +52,18 @@ public class TwitterKafka {
 				            String category = xpath.evaluate("/entry/category", doc);
 				            String content = xpath.evaluate("/entry/object/content", doc);
 				            String publishedValue = xpath.evaluate("/entry/published", doc);
-
-				            // Ignore any tweets that have been deleted
-				            if("Note deleted".equalsIgnoreCase(category)) {
-				                return null;
-				            }
-
 				            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZoneUTC();
 				            DateTime publishedTimestamp = fmt.parseDateTime(publishedValue);
 
-				            tweet = new Tweet(id, content, publishedTimestamp);
+				            collector.emit(
+				                    ImmutableList.<Object>of(id , content , publishedTimestamp.getHourOfDay())
+				                );
 				        } catch (Exception e) {
-				            System.out.println("Error parsing tweet... ignoring it");
+				        	e.printStackTrace();
 				        }
-	             catch (IndexOutOfBoundsException ioobe) {
-	                LOG.warn("Invalid input row", ioobe);
-	            } catch (NumberFormatException nfe) {
-	                LOG.warn("Could not parse numeric value", nfe);
 	            }
 	        }
-	    }
+	    
 
 
     public static void main(String[] args) throws AlreadyAliveException, InvalidTopologyException {
@@ -72,8 +75,8 @@ public class TwitterKafka {
 
         TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
             Common.getKafkaHosts(),
-            ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
-  		   8, // number of partitions per host
+            //ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
+  		   //8, // number of partitions per host
   		  "twitter_gnip-0" // topic to read from
         );
 		//KafkaSpout kafkaSpout = new KafkaSpout(spoutConfig);
@@ -90,8 +93,9 @@ public class TwitterKafka {
         builder
             .newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
             .parallelismHint(6)
-            .each(new Fields("str"), new Tweet.TwitterKafka(), new Fields("id", "content", "published"))
+            .each(new Fields("str"), new ExtractData(), new Fields("id", "content", "published"));
             //.groupBy(new Fields("published"))
+            /*
             .persistentAggregate(
                     // A nontransactional state built on Riak (Use their HTTP API to see progress)
                     new RiakBackingMap.Factory(
@@ -102,7 +106,21 @@ public class TwitterKafka {
                     )            )
             .newValuesStream()
             .each(new Fields("id", "content", "published"), new TwitterKafka.LogInput(), new Fields("never_emits"));
+            */
 
-        HackReduceStormSubmitter.submitTopology("kwitter-kafka", config, builder.build());
+        HackReduceStormSubmitter.submitTopology("twitter-kafka", config, builder.build());
+    }
+    
+    /**
+     * Log each new value for the market cap.
+     */
+    public static class LogInput extends BaseFunction {
+
+        private static final Logger LOG = LoggerFactory.getLogger(LogInput.class);
+
+        @Override
+        public void execute(TridentTuple objects, TridentCollector tridentCollector) {
+            
+        }
     }
 }
