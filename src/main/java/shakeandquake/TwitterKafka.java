@@ -1,5 +1,4 @@
-package shakeandquake;
-import org.hackreduce.storm.example.riak.RiakBackingMap;
+package org.hackreduce.storm.example.riak;
 
 import backtype.storm.Config;
 import backtype.storm.generated.AlreadyAliveException;
@@ -24,6 +23,45 @@ import storm.trident.tuple.TridentTuple;
 import static org.hackreduce.storm.HackReduceStormSubmitter.teamPrefix;
 
 public class TwitterKafka {
+	
+	public static class ExtractData extends BaseFunction {
+
+	        private static final Logger LOG = LoggerFactory.getLogger(ExtractData.class);
+
+	        @Override
+	        public void execute(TridentTuple tuple, TridentCollector collector) {
+
+	            String[] components = tuple.getString(0).split(",");
+	
+				Tweet.parseXml(entryXml);
+				        try {
+				            Document doc = (Document) xpath.evaluate("/", source, XPathConstants.NODE);
+
+				            String id = xpath.evaluate("/entry/id", doc);
+				            String category = xpath.evaluate("/entry/category", doc);
+				            String content = xpath.evaluate("/entry/object/content", doc);
+				            String publishedValue = xpath.evaluate("/entry/published", doc);
+
+				            // Ignore any tweets that have been deleted
+				            if("Note deleted".equalsIgnoreCase(category)) {
+				                return null;
+				            }
+
+				            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZoneUTC();
+				            DateTime publishedTimestamp = fmt.parseDateTime(publishedValue);
+
+				            tweet = new Tweet(id, content, publishedTimestamp);
+				        } catch (Exception e) {
+				            System.out.println("Error parsing tweet... ignoring it");
+				        }
+	             catch (IndexOutOfBoundsException ioobe) {
+	                LOG.warn("Invalid input row", ioobe);
+	            } catch (NumberFormatException nfe) {
+	                LOG.warn("Could not parse numeric value", nfe);
+	            }
+	        }
+	    }
+
 
     public static void main(String[] args) throws AlreadyAliveException, InvalidTopologyException {
 
@@ -34,7 +72,7 @@ public class TwitterKafka {
 
         TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
             Common.getKafkaHosts(),
-            "twitter_stream"
+            "twitter_gnip-0" //, "twitter_quake-1"
         );
 
 
@@ -47,14 +85,14 @@ public class TwitterKafka {
         TridentTopology builder = new TridentTopology();
 
         builder
-            .newStream(teamPrefix("lines"), new TransactionalTridentKafkaSpout(spoutConfig))
+            .newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
             .parallelismHint(6)
-            .each(new Fields("str"), new MarketCapitalization.ExtractStockData(), new Fields("exchange", "symbol", "market_cap"))
-            .groupBy(new Fields("exchange", "symbol"))
+            .each(new Fields("str"), new Tweet.TwitterKafka(), new Fields("id", "content", "published"))
+            //.groupBy(new Fields("published"))
             .persistentAggregate(
                     // A nontransactional state built on Riak (Use their HTTP API to see progress)
                     new RiakBackingMap.Factory(
-                            teamPrefix("stock-state"), // The riak 'bucket' name to store results in
+                            teamPrefix("shakeandquake"), // The riak 'bucket' name to store results in
                             Common.getRiakHosts(),
                             Common.getRiakPort(),
                             Double.class               // The type of the data to store (serialized as json)
