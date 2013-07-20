@@ -19,6 +19,7 @@ import storm.trident.operation.builtin.Sum;
 import storm.trident.planner.processor.StateQueryProcessor;
 import storm.trident.testing.MemoryMapState;
 import storm.trident.tuple.TridentTuple;
+import storm.trident.Stream;
 
 
 public class TridentQuake {
