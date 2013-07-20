@@ -13,6 +13,7 @@ import com.basho.riak.client.bucket.Bucket;
 import com.basho.riak.client.cap.DefaultRetrier;
 import com.basho.riak.client.raw.pbc.PBClientConfig;
 import com.basho.riak.client.raw.pbc.PBClusterConfig;
+import org.hackreduce.storm.HackReduceStormSubmitter;
 import storm.trident.Stream;
 import storm.trident.TridentState;
 import storm.trident.TridentTopology;
@@ -195,12 +196,12 @@ public class TridentQuake {
                 .each(new Fields("tweet"), new Split(), new Fields("word"))
                 .groupBy(new Fields("near", "word"))
                 .persistentAggregate(new MemoryMapState.Factory(),
-                                     new Count(), new Fields("count"))
+                                     new Count(), new Fields("word-count"))
                 .parallelismHint(16);
         TridentState tweetCounts = near_tweets
                 .groupBy(new Fields("near"))
                 .persistentAggregate(new MemoryMapState.Factory(),
-                                     new Count(), new Fields("count"))
+                                     new Count(), new Fields("tweet-count"))
                 .parallelismHint(16);
 
         topology.newDRPCStream("p_quake", drpc)
@@ -208,7 +209,7 @@ public class TridentQuake {
                 .stateQuery(tweetCounts, new Fields("near"), new MapGet(), new Fields("tweet-count"))
                 .each(new Fields("args"), new Split(), new Fields("word"))
                 .partitionBy(new Fields("near"))
-                .partitionAggregate(new Fields("near", "word"), new FirstN.FirstNSortedAgg(1, "word", true), new Fields("near", "word"))
+                .partitionAggregate(new Fields("near", "word", "tweet-count"), new FirstN.FirstNSortedAgg(1, "word", true), new Fields("near", "word", "tweet-count"))
                 .stateQuery(wordCounts, new Fields("near", "word"), new MapGet(), new Fields("word-count"))
                 .each(new Fields("word-count"), new FilterNull())
                 .partitionBy(new Fields("word"))
@@ -220,10 +221,18 @@ public class TridentQuake {
     public static void main(String[] args) throws Exception {
         Config conf = new Config();
         conf.setMaxSpoutPending(20);
+
+        LocalDRPC drpc = new LocalDRPC();
+        HackReduceStormSubmitter.submitTopology("shake-and-quake", conf, buildTopology(drpc));
+
+        //LocalCluster cluster = new LocalCluster();
+        //cluster.submitTopology("shake-and-quake", conf, buildTopology(drpc));
+
+        /*
         if(args.length==0) {
             LocalDRPC drpc = new LocalDRPC();
             LocalCluster cluster = new LocalCluster();
-            cluster.submitTopology("wordCounter", conf, buildTopology(drpc));
+            cluster.submitTopology("shake-and-quake", conf, buildTopology(drpc));
             for(int i=0; i<100; i++) {
                 System.out.println("DRPC RESULT: " + drpc.execute("words", "cat the dog jumped"));
                 Thread.sleep(1000);
@@ -232,5 +241,6 @@ public class TridentQuake {
             conf.setNumWorkers(3);
             StormSubmitter.submitTopology(args[0], conf, buildTopology(null));        
         }
+        */
     }
 }

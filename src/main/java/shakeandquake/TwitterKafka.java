@@ -5,9 +5,11 @@ import backtype.storm.generated.AlreadyAliveException;
 import backtype.storm.generated.InvalidTopologyException;
 import backtype.storm.spout.SchemeAsMultiScheme;
 import backtype.storm.tuple.Fields;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 import org.hackreduce.storm.HackReduceStormSubmitter;
 import org.hackreduce.storm.example.common.Common;
+import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.kafka.StringScheme;
@@ -23,6 +25,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
+import java.util.Map;
+
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -34,6 +38,8 @@ public class TwitterKafka {
 
 	        private static final Logger LOG = LoggerFactory.getLogger(ExtractData.class);
 
+            private ObjectMapper objectMapper = new ObjectMapper();
+
 	        @Override
 	        public void execute(TridentTuple tuple, TridentCollector collector) {
 
@@ -41,32 +47,44 @@ public class TwitterKafka {
 	            XPathFactory xpathFactory = XPathFactory.newInstance();
 	            XPath xpath = xpathFactory.newXPath();
 
+                try {
+                Map userData = objectMapper.readValue(entryXml, Map.class);
+                String id = (String) userData.get("id");
+
+                Map object = (Map) userData.get("object");
+
+                String content = (String) object.get("summary");
+                String publishTimeValue = (String) userData.get("postedTime");
+                /*
 	            InputSource source = new InputSource(new StringReader(entryXml));
-				        try {
-				            Document doc = (Document) xpath.evaluate("/", source, XPathConstants.NODE);
+                Document doc = (Document) xpath.evaluate("/", source, XPathConstants.NODE);
 
-				            String id = xpath.evaluate("/entry/id", doc);
-				            String category = xpath.evaluate("/entry/category", doc);
-				            String content = xpath.evaluate("/entry/object/content", doc);
-				            String publishedValue = xpath.evaluate("/entry/published", doc);
-				            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZoneUTC();
-				            DateTime publishedTimestamp = fmt.parseDateTime(publishedValue);
+                String id = xpath.evaluate("/entry/id", doc);
+                String category = xpath.evaluate("/entry/category", doc);
+                String content = xpath.evaluate("/entry/object/content", doc);
+                String publishedValue = xpath.evaluate("/entry/published", doc);
+                */
+                //DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ").withZoneUTC();
+                DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+                DateTime publishedTimestamp = fmt.parseDateTime(publishTimeValue);
 
-				            collector.emit(
-				                    ImmutableList.<Object>of(id , content , publishedTimestamp.toDate().getTime())
-				                );
-				        } catch (Exception e) {
-				        	e.printStackTrace();
-				        }
-	            }
-	        }
+                if(id != null && content != null && publishedTimestamp != null) {
+                    collector.emit(
+                        ImmutableList.<Object>of(id , content , publishedTimestamp.toDate().getTime())
+                    );
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 	    
 	public static Stream buildSpout(TridentTopology builder){
         TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
             Common.getKafkaHosts(),
             //ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
   		   //8, // number of partitions per host
-  		  "twitter_gnip-0" // topic to read from
+  		  "twitter_gnip" // topic to read from
         );
 
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
@@ -78,7 +96,7 @@ public class TwitterKafka {
         return builder
             .newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
             .parallelismHint(6)
-            .each(new Fields("str"), new ExtractData(), new Fields("id", "content", "published"));
+            .each(new Fields("str"), new ExtractData(), new Fields("id", "tweet", "published"));
 	}
 
     public static void main(String[] args) throws AlreadyAliveException, InvalidTopologyException {
@@ -108,7 +126,7 @@ public class TwitterKafka {
         builder
             .newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
             .parallelismHint(6)
-            .each(new Fields("str"), new ExtractData(), new Fields("id", "content", "published"));
+            .each(new Fields("str"), new ExtractData(), new Fields("id", "tweet", "published"));
             //.groupBy(new Fields("published"))
             /*
             .persistentAggregate(
