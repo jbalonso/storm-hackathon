@@ -46,7 +46,6 @@ public class TridentQuake {
         Stream raw_tweets =
               topology.newStream("tweets-undifferentiated", spout)
                 .parallelismHint(16);
-                .each(new Fields("tweet"), new Split(), new Fields("word"))
         TridentState wordCounts = raw_tweets
                 .each(new Fields("tweet"), new Split(), new Fields("word"))
                 .groupBy(new Fields("near", "word"))
