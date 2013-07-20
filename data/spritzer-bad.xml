@@ -1,0 +1,20 @@
+<entry>
+    <id>tag:search.twitter.com,2005:290841805476466688</id>
+    <title>Note deleted on Twitter</title>
+    <published>2013-07-20T16:34:14Z</published>
+    <category term="NoteDeleted" label="Note Deleted"/>
+    <source>
+        <title>Twitter - Spritzer</title>
+        <updated>2013-07-20T16:34:14Z</updated>
+    </source>
+    <provider>
+        <name>Twitter</name>
+        <uri>http://www.twitter.com/</uri>
+    </provider>
+    <verb>http://activitystrea.ms/schema/1.0/delete</verb>
+    <object>
+        <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+        <id>object:search.twitter.com,2005:290841805476466688</id>
+        <content>Note deleted</content>
+    </object>
+</entry>

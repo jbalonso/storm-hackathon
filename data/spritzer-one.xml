@@ -1,0 +1,64 @@
+<entry>
+<id>tag:search.twitter.com,2005:358625897881935873</id>
+<published>2013-07-20T16:34:11+00:00</published>
+<updated>2013-07-20T16:34:11+00:00</updated>
+<summary type="html">@Skullington Of course he does this is him http://t.co/35mmCAJnjm</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/BattyQuick/statuses/358625897881935873"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:13Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<title>madi posted a note on Twitter</title>
+<category term="StatusPosted" label="Status Posted"/>
+<category term="NotePosted" label="Note Posted"/>
+<verb>http://activitystrea.ms/schema/1.0/post</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625897881935873</id>
+    <content type="html">@Skullington Of course he does this is him http://t.co/35mmCAJnjm</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/BattyQuick/statuses/358625897881935873"/>
+    <in-reply-to type="text/html" href="http://twitter.com/Skullington/statuses/358625152575082497"/>
+</object>
+<author>
+    <name>madi</name>
+    <uri>http://www.twitter.com/BattyQuick</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="868" followingCount="1501"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/BattyQuick"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000159593120/111616f83477269dc564b2ad41127d27_normal.jpeg"/>
+    <id>http://www.twitter.com/BattyQuick</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="868" followingCount="1501"/>
+    <stats activityCount="50376" upstreamId="id:twitter.com:474311015"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/BattyQuick"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000159593120/111616f83477269dc564b2ad41127d27_normal.jpeg"/>
+    <id>http://www.twitter.com/BattyQuick</id>
+    <location>Sea of Madness and Sorrow</location>
+    <aboutMe>Book geek and music lover. @Skullington is the Jack to my Alex. #Jalex @LeafSpider10219 is mine and not yours, okay?</aboutMe>
+</actor>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="0" end="12">
+            <id>717102686</id>
+            <name>Guander Wumen</name>
+            <screen_name>Skullington</screen_name>
+        </user_mention>
+    </user_mentions>
+</twitter_entities>
+<urls>
+    <url>
+        <short_url>http://t.co/35mmCAJnjm</short_url>
+        <long_url>http://twitter.com/BattyQuick/status/358625897881935873/photo/1</long_url>
+    </url>
+</urls>
+</entry>
