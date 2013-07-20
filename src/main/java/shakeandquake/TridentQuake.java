@@ -1,8 +1,14 @@
 package shakeandquake;
 
+import com.basho.riak.client.IRiakClient;
+import com.basho.riak.client.RiakFactory;
+import com.basho.riak.client.bucket.Bucket;
+import com.basho.riak.client.cap.DefaultRetrier;
+import com.basho.riak.client.raw.pbc.PBClientConfig;
+import com.basho.riak.client.raw.pbc.PBClusterConfig;
 import storm.trident.operation.BaseAggregator;
+import storm.trident.operation.TridentOperationContext;
 import storm.trident.operation.builtin.*;
-import storm.trident.testing.FixedBatchSpout;
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.LocalDRPC;
@@ -17,10 +23,43 @@ import storm.trident.operation.TridentCollector;
 import storm.trident.testing.MemoryMapState;
 import storm.trident.tuple.TridentTuple;
 import storm.trident.Stream;
-import org.hackreduce.storm.example.riak.TwitterKafka;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class TridentQuake {
+    public static class Near extends BaseFunction {
+
+        private List<Long> quakeTimes = null;
+
+        public Near(Iterable<String> timestamps) {
+            quakeTimes = new ArrayList<Long>();
+            for(String time : timestamps) {
+                quakeTimes.add(Long.valueOf(time));
+            }
+        }
+
+        @Override
+        public void execute(TridentTuple tuple, TridentCollector tridentCollector) {
+            long tweetTimestamp = tuple.getLong(0);
+
+            for(Long quakeTimestamp : quakeTimes) {
+                if(Math.abs(tweetTimestamp - quakeTimestamp) < 1800000) {
+                    tridentCollector.emit(new Values(Boolean.TRUE));
+                    return;
+                }
+            }
+
+            tridentCollector.emit(new Values(Boolean.FALSE));
+        }
+
+        public void prepare(Map map, TridentOperationContext tridentOperationContext) {
+            super.prepare(map, tridentOperationContext);
+        }
+    }
+
     public static class Split extends BaseFunction {
         @Override
         public void execute(TridentTuple tuple, TridentCollector collector) {
@@ -115,20 +154,47 @@ public class TridentQuake {
                 new Values("how many apples can you eat"),
                 new Values("to be or not to be the person"));
 		*/
-		
-				        
-        TridentTopology topology = new TridentTopology();        
-        Stream raw_tweets = TwitterKafka.buildSpout(topology);     
-        Stream raw_tweets =
-              topology.newStream("tweets-undifferentiated", spout)
-                .parallelismHint(16);
-        TridentState wordCounts = raw_tweets
+
+        Near near = null;
+        try {
+            PBClusterConfig clusterConfig = new PBClusterConfig(5);
+
+            PBClientConfig clientConfig = new PBClientConfig.Builder()
+                    .withPort(8087)
+                    .build();
+
+            String[] hosts = new String[] {
+                    "cluster-7-slave-00.sl.hackreduce.net",
+                    "cluster-7-slave-02.sl.hackreduce.net",
+                    "cluster-7-slave-03.sl.hackreduce.net",
+                    "cluster-7-slave-06.sl.hackreduce.net"
+            };
+            clusterConfig.addHosts(clientConfig, hosts);
+
+            IRiakClient riakClient = RiakFactory.newClient(clusterConfig);
+
+            Bucket bucket = riakClient.fetchBucket("shakeandquake")
+                    .withRetrier(DefaultRetrier.attempts(3))
+                    .execute();
+
+            near = new Near(bucket.keys());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        TridentTopology topology = new TridentTopology();
+        Stream raw_tweets = TwitterKafka.buildSpout(topology);
+        Stream near_tweets = raw_tweets
+                .each(new Fields("published"), near, new Fields("near"));
+
+        TridentState wordCounts = near_tweets
                 .each(new Fields("tweet"), new Split(), new Fields("word"))
                 .groupBy(new Fields("near", "word"))
                 .persistentAggregate(new MemoryMapState.Factory(),
                                      new Count(), new Fields("count"))
                 .parallelismHint(16);
-        TridentState tweetCounts = raw_tweets
+        TridentState tweetCounts = near_tweets
                 .groupBy(new Fields("near"))
                 .persistentAggregate(new MemoryMapState.Factory(),
                                      new Count(), new Fields("count"))

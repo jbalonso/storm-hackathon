@@ -8,24 +8,21 @@ import backtype.storm.tuple.Fields;
 import com.google.common.collect.ImmutableList;
 import org.hackreduce.storm.HackReduceStormSubmitter;
 import org.hackreduce.storm.example.common.Common;
-import org.hackreduce.storm.example.stock.MarketCapitalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import storm.kafka.StringScheme;
 import storm.kafka.trident.TransactionalTridentKafkaSpout;
 import storm.kafka.trident.TridentKafkaConfig;
+import storm.trident.Stream;
 import storm.trident.TridentTopology;
 import storm.trident.operation.BaseFunction;
-import storm.trident.operation.CombinerAggregator;
 import storm.trident.operation.TridentCollector;
 import storm.trident.tuple.TridentTuple;
 import static org.hackreduce.storm.HackReduceStormSubmitter.teamPrefix;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.File;
 import java.io.StringReader;
-import com.google.common.io.Files;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -56,7 +53,7 @@ public class TwitterKafka {
 				            DateTime publishedTimestamp = fmt.parseDateTime(publishedValue);
 
 				            collector.emit(
-				                    ImmutableList.<Object>of(id , content , publishedTimestamp.getHourOfDay())
+				                    ImmutableList.<Object>of(id , content , publishedTimestamp.toDate().getTime())
 				                );
 				        } catch (Exception e) {
 				        	e.printStackTrace();
@@ -64,7 +61,7 @@ public class TwitterKafka {
 	            }
 	        }
 	    
-	public static TridentTopology buildSpout(TridentTopology builder){
+	public static Stream buildSpout(TridentTopology builder){
         TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
             Common.getKafkaHosts(),
             //ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
@@ -77,7 +74,6 @@ public class TwitterKafka {
         // This tells the spout to start at the very beginning of the data stream
         // If you just want to resume where you left off, remove this line
         spoutConfig.forceStartOffsetTime(-2);
-
 
         return builder
             .newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
