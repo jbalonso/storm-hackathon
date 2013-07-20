@@ -40,13 +40,13 @@ public class TridentQuake {
                 new Values("four score and seven years ago"),
                 new Values("how many apples can you eat"),
                 new Values("to be or not to be the person"));
+
         spout.setCycle(true);
         
         TridentTopology topology = new TridentTopology();        
         Stream raw_tweets =
               topology.newStream("tweets-undifferentiated", spout)
                 .parallelismHint(16);
-                .each(new Fields("tweet"), new Split(), new Fields("word"))
         TridentState wordCounts = raw_tweets
                 .each(new Fields("tweet"), new Split(), new Fields("word"))
                 .groupBy(new Fields("near", "word"))
