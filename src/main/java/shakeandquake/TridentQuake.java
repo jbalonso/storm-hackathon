@@ -17,6 +17,7 @@ import storm.trident.operation.TridentCollector;
 import storm.trident.testing.MemoryMapState;
 import storm.trident.tuple.TridentTuple;
 import storm.trident.Stream;
+import org.hackreduce.storm.example.riak.TwitterKafka;
 
 
 public class TridentQuake {
@@ -106,16 +107,18 @@ public class TridentQuake {
     
     public static StormTopology buildTopology(LocalDRPC drpc) {
         // FIXME: This spout needs to be replaced with a KafkaSpout
+		/*
         FixedBatchSpout spout = new FixedBatchSpout(new Fields("sentence"), 3,
                 new Values("the cow jumped over the moon"),
                 new Values("the man went to the store and bought some candy"),
                 new Values("four score and seven years ago"),
                 new Values("how many apples can you eat"),
                 new Values("to be or not to be the person"));
-
-        spout.setCycle(true);
-        
+		*/
+		
+				        
         TridentTopology topology = new TridentTopology();        
+        Stream raw_tweets = TwitterKafka.buildSpout(topology);     
         Stream raw_tweets =
               topology.newStream("tweets-undifferentiated", spout)
                 .parallelismHint(16);

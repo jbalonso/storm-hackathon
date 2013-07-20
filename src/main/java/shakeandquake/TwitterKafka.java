@@ -64,7 +64,26 @@ public class TwitterKafka {
 	            }
 	        }
 	    
+	public static TridentTopology buildSpout(TridentTopology builder){
+        TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
+            Common.getKafkaHosts(),
+            //ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
+  		   //8, // number of partitions per host
+  		  "twitter_gnip-0" // topic to read from
+        );
 
+        spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
+
+        // This tells the spout to start at the very beginning of the data stream
+        // If you just want to resume where you left off, remove this line
+        spoutConfig.forceStartOffsetTime(-2);
+
+
+        return builder
+            .newStream(teamPrefix("shake-and-quake"), new TransactionalTridentKafkaSpout(spoutConfig))
+            .parallelismHint(6)
+            .each(new Fields("str"), new ExtractData(), new Fields("id", "content", "published"));
+	}
 
     public static void main(String[] args) throws AlreadyAliveException, InvalidTopologyException {
 
