@@ -22,17 +22,12 @@ import storm.trident.tuple.TridentTuple;
 
 
 public class TridentQuake {
-    public static class AnalysisSplit extends BaseFunction {
+    public static class Split extends BaseFunction {
         @Override
         public void execute(TridentTuple tuple, TridentCollector collector) {
-            /** expect  (bool near, string tweet, int count)
-             *  emit    (bool near, string word, int count)
-             */
-            Boolean near = tuple.getBoolean(0);
-            String tweet = tuple.getString(1);
-            Integer count = tuple.getInteger(2);
+            String sentence = tuple.getString(0);
             for(String word: sentence.split(" ")) {
-                collector.emit(new Values(near, word, count));
+                collector.emit(new Values(word));                
             }
         }
     }
