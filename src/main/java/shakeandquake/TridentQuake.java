@@ -75,18 +75,28 @@ public class TridentQuake {
             /** expect: (Boolean near, Integer word-count, Integer tweet-count)
              */
             static class Q_State {
-                    float p_tweet_given_base = 0.0;
-                    float p_tweet_given_quake = 0.0;
+                    float p_tweet_given_base = 1.0;
+                    float p_tweet_given_quake = 1.0;
                     float p_quake = 0.0;
-                    float p_base = 0.0;
-                    float p_quake_given_tweet =0.0;
             }
             public Q_State init(Object batchId, TridentCollector collector) {
                     return new Q_State();
             }
             public void aggregate(Q_State state, TridentTuple tuple, TridentCollector collector) {
+                    float p_word_base = tuple.getFloatByField("p_word_base");
+                    float p_word_quake = tuple.getFloatByField("p_word_quake");
+                    float p_quake = tuple.getFloatByField("p_quake");
+                    state.tweet_given_base *= p_word_base;
+                    state.tweet_given_quake *= p_word_quake;
+                    state.p_quake = p_quake;
             }
             public void complete(Q_State state, TridentCollector collector) {
+                    float p_quake = state.p_quake;
+                    float p_base = 1.0 - p_quake;
+                    float p_tweet = ((state.p_tweet_given_base * p_base)
+                                    +(state.p_tweet_given_quake * p_quake));
+                    float p_quake_given_tweet = p_tweet_given_quake * p_quake / p_tweet;
+                    collector.emit(new Values(new Float(p_quake_given_tweet)));
             }
     }
     
@@ -117,18 +127,18 @@ public class TridentQuake {
                                      new Count(), new Fields("count"))
                 .parallelismHint(16);
 
-        // FIXME: This DRPC code needs to be fixed to process a tweet correctly
         topology.newDRPCStream("p_quake", drpc)
                 .each(new Fields(), new Waffle(), new Fields("near"))
                 .stateQuery(tweetCounts, new Fields("near"), new MapGet(), new Fields("tweet-count"))
                 .each(new Fields("args"), new Split(), new Fields("word"))
-                .groupBy(new Fields("near"))
-                .aggregate(new Fields("word"), new FirstN(1, "word"), new Fields("word-uniq"))
-				.groupBy(new Fields("near", "word")
+                .partitionBy(new Fields("near"))
+                .partitionAggregate(new Fields("word"), new FirstN(1, "word"), new Fields("word-uniq"))
                 .project(new Fields("near", "word", "tweet-count"))
                 .stateQuery(wordCounts, new Fields("near", "word"), new MapGet(), new Fields("word-count"))
                 .each(new Fields("word-count"), new FilterNull())
-                .aggregate(new Fields("count"), new Sum(), new Fields("sum"))
+                .partitionBy(new Fields("word")
+                .partitionAggregate(new Fields("near", "word-count", "tweet-count"), new P_Word(), new Fields("p_word_base", "p_word_quake", "p_quake"))
+                .aggregate(new Fields("p_word_base", "p_word_quake", "p_quake"), new P_Quake(), new Fields("p_quake_given_tweet"))
                 ;
         return topology.build();
     }
