@@ -33,6 +33,7 @@ public class TridentQuake {
     }
     
     public static StormTopology buildTopology(LocalDRPC drpc) {
+        // FIXME: This spout needs to be replaced with a KafkaSpout
         FixedBatchSpout spout = new FixedBatchSpout(new Fields("sentence"), 3,
                 new Values("the cow jumped over the moon"),
                 new Values("the man went to the store and bought some candy"),
@@ -42,15 +43,23 @@ public class TridentQuake {
         spout.setCycle(true);
         
         TridentTopology topology = new TridentTopology();        
-        TridentState wordCounts =
-              topology.newStream("spout1", spout)
-                .parallelismHint(16)
-                .each(new Fields("sentence"), new Split(), new Fields("word"))
-                .groupBy(new Fields("word"))
-                .persistentAggregate(new MemoryMapState.Factory(),
-                                     new Count(), new Fields("count"))         
+        Stream raw_tweets =
+              topology.newStream("tweets-undifferentiated", spout)
                 .parallelismHint(16);
-                
+                .each(new Fields("tweet"), new Split(), new Fields("word"))
+        TridentState wordCounts = raw_tweets
+                .each(new Fields("tweet"), new Split(), new Fields("word"))
+                .groupBy(new Fields("near", "word"))
+                .persistentAggregate(new MemoryMapState.Factory(),
+                                     new Count(), new Fields("count"))
+                .parallelismHint(16);
+        TridentState tweetCounts = raw_tweets
+                .groupBy(new Fields("near"))
+                .persistentAggregate(new MemoryMapState.Factory(),
+                                     new Count(), new Fields("count"))
+                .parallelismHint(16);
+
+        // FIXME: This DRPC code needs to be fixed to process a tweet correctly
         topology.newDRPCStream("words", drpc)
                 .each(new Fields("args"), new Split(), new Fields("word"))
                 .groupBy(new Fields("word"))
