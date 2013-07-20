@@ -17,7 +17,7 @@ import storm.trident.operation.TridentCollector;
 import storm.trident.testing.MemoryMapState;
 import storm.trident.tuple.TridentTuple;
 import storm.trident.Stream;
-import org.hackreduce.storm.example.riak.TwitterKafka;
+//import org.hackreduce.storm.example.riak.TwitterKafka;
 
 
 public class TridentQuake {
@@ -116,13 +116,9 @@ public class TridentQuake {
                 new Values("to be or not to be the person"));
 		*/
 		
-				        
-        TridentTopology topology = new TridentTopology();        
-        Stream raw_tweets = TwitterKafka.buildSpout(topology);     
-        Stream raw_tweets =
-              topology.newStream("tweets-undifferentiated", spout)
-                .parallelismHint(16);
-        TridentState wordCounts = raw_tweets
+	    TridentTopology topology = new TridentTopology();        
+
+        TridentState wordCounts = TwitterKafka.buildSpout(topology)
                 .each(new Fields("tweet"), new Split(), new Fields("word"))
                 .groupBy(new Fields("near", "word"))
                 .persistentAggregate(new MemoryMapState.Factory(),
