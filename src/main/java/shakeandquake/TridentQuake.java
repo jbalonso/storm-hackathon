@@ -98,6 +98,7 @@ public class TridentQuake {
                 new Values("four score and seven years ago"),
                 new Values("how many apples can you eat"),
                 new Values("to be or not to be the person"));
+
         spout.setCycle(true);
         
         TridentTopology topology = new TridentTopology();        

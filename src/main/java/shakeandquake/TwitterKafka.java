@@ -72,8 +72,11 @@ public class TwitterKafka {
 
         TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
             Common.getKafkaHosts(),
-            "twitter_gnip-0" //, "twitter_quake-1"
+            ImmutableList.of("cluster-7-kafka-00.sl.hackreduce.net:9999"), // list of Kafka brokers
+  		   8, // number of partitions per host
+  		  "twitter_gnip-0" // topic to read from
         );
+		//KafkaSpout kafkaSpout = new KafkaSpout(spoutConfig);
 
 
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
@@ -96,14 +99,10 @@ public class TwitterKafka {
                             Common.getRiakHosts(),
                             Common.getRiakPort(),
                             Double.class               // The type of the data to store (serialized as json)
-                    ),
-                    new Fields("market_cap"),
-                    new MarketCapitalization.MaxValue(),
-                    new Fields("max_market_cap")
-            )
+                    )            )
             .newValuesStream()
-            .each(new Fields("exchange", "symbol", "max_market_cap"), new MarketCapitalization.LogInput(), new Fields("never_emits"));
+            .each(new Fields("id", "content", "published"), new TwitterKafka.LogInput(), new Fields("never_emits"));
 
-        HackReduceStormSubmitter.submitTopology("market-cap", config, builder.build());
+        HackReduceStormSubmitter.submitTopology("kwitter-kafka", config, builder.build());
     }
 }
