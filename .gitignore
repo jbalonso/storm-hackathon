@@ -4,6 +4,7 @@
 # Intellij-specific
 *.iws
 *.iml
+.idea
 
 # sbt specific
 dist/*
