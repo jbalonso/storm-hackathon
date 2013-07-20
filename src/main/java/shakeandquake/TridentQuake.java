@@ -1,4 +1,4 @@
-package storm.starter.trident;
+package shakeandquake;
 
 import storm.trident.testing.FixedBatchSpout;
 import backtype.storm.Config;
@@ -21,7 +21,7 @@ import storm.trident.testing.MemoryMapState;
 import storm.trident.tuple.TridentTuple;
 
 
-public class TridentWordCount {    
+public class TridentQuake {
     public static class Split extends BaseFunction {
         @Override
         public void execute(TridentTuple tuple, TridentCollector collector) {
