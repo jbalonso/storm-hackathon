@@ -33,8 +33,9 @@ public class TwitterKafka {
 
         TridentKafkaConfig spoutConfig = new TridentKafkaConfig(
             Common.getKafkaHosts(),
-            "stock_daily_prices"
+            "twitter_stream"
         );
+
 
         spoutConfig.scheme = new SchemeAsMultiScheme(new StringScheme());
 
