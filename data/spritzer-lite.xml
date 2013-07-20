@@ -1,0 +1,422 @@
+<entry>
+    <id>tag:search.twitter.com,2005:290841805476466688</id>
+    <title>Note deleted on Twitter</title>
+    <published>2013-07-20T16:34:14Z</published>
+    <category term="NoteDeleted" label="Note Deleted"/>
+    <source>
+        <title>Twitter - Spritzer</title>
+        <updated>2013-07-20T16:34:14Z</updated>
+    </source>
+    <provider>
+        <name>Twitter</name>
+        <uri>http://www.twitter.com/</uri>
+    </provider>
+    <verb>http://activitystrea.ms/schema/1.0/delete</verb>
+    <object>
+        <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+        <id>object:search.twitter.com,2005:290841805476466688</id>
+        <content>Note deleted</content>
+    </object>
+</entry>
+<entry>
+<id>tag:search.twitter.com,2005:358625897881935873</id>
+<published>2013-07-20T16:34:11+00:00</published>
+<updated>2013-07-20T16:34:11+00:00</updated>
+<summary type="html">@Skullington Of course he does this is him http://t.co/35mmCAJnjm</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/BattyQuick/statuses/358625897881935873"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:13Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<title>madi posted a note on Twitter</title>
+<category term="StatusPosted" label="Status Posted"/>
+<category term="NotePosted" label="Note Posted"/>
+<verb>http://activitystrea.ms/schema/1.0/post</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625897881935873</id>
+    <content type="html">@Skullington Of course he does this is him http://t.co/35mmCAJnjm</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/BattyQuick/statuses/358625897881935873"/>
+    <in-reply-to type="text/html" href="http://twitter.com/Skullington/statuses/358625152575082497"/>
+</object>
+<author>
+    <name>madi</name>
+    <uri>http://www.twitter.com/BattyQuick</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="868" followingCount="1501"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/BattyQuick"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000159593120/111616f83477269dc564b2ad41127d27_normal.jpeg"/>
+    <id>http://www.twitter.com/BattyQuick</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="868" followingCount="1501"/>
+    <stats activityCount="50376" upstreamId="id:twitter.com:474311015"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/BattyQuick"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000159593120/111616f83477269dc564b2ad41127d27_normal.jpeg"/>
+    <id>http://www.twitter.com/BattyQuick</id>
+    <location>Sea of Madness and Sorrow</location>
+    <aboutMe>Book geek and music lover. @Skullington is the Jack to my Alex. #Jalex @LeafSpider10219 is mine and not yours, okay?</aboutMe>
+</actor>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="0" end="12">
+            <id>717102686</id>
+            <name>Guander Wumen</name>
+            <screen_name>Skullington</screen_name>
+        </user_mention>
+    </user_mentions>
+</twitter_entities>
+<urls>
+    <url>
+        <short_url>http://t.co/35mmCAJnjm</short_url>
+        <long_url>http://twitter.com/BattyQuick/status/358625897881935873/photo/1</long_url>
+    </url>
+</urls>
+</entry>
+<entry>
+<id>tag:search.twitter.com,2005:358625897881935872</id>
+<published>2013-07-20T16:34:11+00:00</published>
+<updated>2013-07-20T16:34:11+00:00</updated>
+<summary type="html">RT @CaseeyTheWanted: Gold forever
+    #RT #TWFanmily
+
+    #MTVHottest The Wanted</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/jaysnippleokay/statuses/358625897881935872"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:13Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<contributor>
+    <name>Tweet Limit FFS</name>
+    <uri>http://www.twitter.com/CaseeyTheWanted</uri>
+</contributor>
+<link rel="via" type="text/html" href="http://twitter.com/CaseeyTheWanted/statuses/358625344560955393"/>
+<title>- shared: Tweet Limit FFS posted a note on Twitter</title>
+<category term="StatusShared" label="Status Shared"/>
+<category term="NoteShared" label="Note Shared"/>
+<verb>http://activitystrea.ms/schema/1.0/share</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625897881935872</id>
+    <content type="html">RT @CaseeyTheWanted: Gold forever
+        #RT #TWFanmily
+
+        #MTVHottest The Wanted</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/jaysnippleokay/statuses/358625897881935872"/>
+</object>
+<author>
+    <name>-</name>
+    <uri>http://www.twitter.com/jaysnippleokay</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="4478" followingCount="4097"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/jaysnippleokay"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000160888876/e9d9cf4ca78ed64e172e1eff85a8f3f2_normal.jpeg"/>
+    <id>http://www.twitter.com/jaysnippleokay</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="4478" followingCount="4097"/>
+    <stats activityCount="40511" upstreamId="id:twitter.com:745120579"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/jaysnippleokay"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000160888876/e9d9cf4ca78ed64e172e1eff85a8f3f2_normal.jpeg"/>
+    <id>http://www.twitter.com/jaysnippleokay</id>
+    <location>district3+5SOS</location>
+    <aboutMe>?5 Australians, 4 British and 1 Irish?</aboutMe>
+</actor>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="3" end="19">
+            <id>611581619</id>
+            <name>Tweet Limit FFS</name>
+            <screen_name>CaseeyTheWanted</screen_name>
+        </user_mention>
+    </user_mentions>
+    <hashtags>
+        <hashtag start="35" end="38">
+            <text>RT</text>
+        </hashtag>
+        <hashtag start="39" end="49">
+            <text>TWFanmily</text>
+        </hashtag>
+        <hashtag start="51" end="62">
+            <text>MTVHottest</text>
+        </hashtag>
+    </hashtags>
+</twitter_entities>
+</entry>
+<entry>
+<id>tag:search.twitter.com,2005:358625910481625088</id>
+<published>2013-07-20T16:34:14+00:00</published>
+<updated>2013-07-20T16:34:14+00:00</updated>
+<summary type="html">@SophiiaLaaComow Laquelle bebouw ?</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/Mlle_Mhoumadi/statuses/358625910481625088"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:15Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<title>. Ninaa  posted a note on Twitter</title>
+<category term="StatusPosted" label="Status Posted"/>
+<category term="NotePosted" label="Note Posted"/>
+<verb>http://activitystrea.ms/schema/1.0/post</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625910481625088</id>
+    <content type="html">@SophiiaLaaComow Laquelle bebouw ?</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/Mlle_Mhoumadi/statuses/358625910481625088"/>
+    <in-reply-to type="text/html" href="http://twitter.com/SophiiaLaaComow/statuses/358625794744008704"/>
+</object>
+<author>
+    <name>. Ninaa </name>
+    <uri>http://www.twitter.com/Mlle_Mhoumadi</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="413" followingCount="368"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/Mlle_Mhoumadi"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000118474551/deb7d9f7a900efe4ace4abb4e75f44e2_normal.jpeg"/>
+    <id>http://www.twitter.com/Mlle_Mhoumadi</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="413" followingCount="368"/>
+    <stats activityCount="12198" upstreamId="id:twitter.com:411499160"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/Mlle_Mhoumadi"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000118474551/deb7d9f7a900efe4ace4abb4e75f44e2_normal.jpeg"/>
+    <id>http://www.twitter.com/Mlle_Mhoumadi</id>
+    <location>Nice, France</location>
+    <aboutMe>La vie est trop courte pour se r?veiller avec des regrets, alors aime les gens qui te traitent bien et oublie les autres. XXII.III.MMXIII ?</aboutMe>
+</actor>
+<point>43.73514572 7.3026594</point>
+<polygon>43.4803247 6.6350751 44.3610783 6.6350751 44.3610783 7.7192082 43.4803247 7.7192082</polygon>
+<address>
+    <formatted>Alpes-Maritimes, Provence-Alpes-C?te d'Azur</formatted>
+    <country>FR</country>
+</address>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="0" end="16">
+            <id>1496575213</id>
+            <name>PrincessLoveuz ?</name>
+            <screen_name>SophiiaLaaComow</screen_name>
+        </user_mention>
+    </user_mentions>
+</twitter_entities>
+</entry>
+<entry>
+<id>tag:search.twitter.com,2005:358625910460649472</id>
+<published>2013-07-20T16:34:14+00:00</published>
+<updated>2013-07-20T16:34:14+00:00</updated>
+<summary type="html">@AshChagla http://t.co/vFKArD1I9Q</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/Everettyvibsx/statuses/358625910460649472"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:15Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<title>Everett Tayna
+    posted a note on Twitter</title>
+<category term="StatusPosted" label="Status Posted"/>
+<category term="NotePosted" label="Note Posted"/>
+<verb>http://activitystrea.ms/schema/1.0/post</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625910460649472</id>
+    <content type="html">@AshChagla http://t.co/vFKArD1I9Q</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/Everettyvibsx/statuses/358625910460649472"/>
+    <in-reply-to type="text/html" href="http://twitter.com/AshChagla/statuses/358625117821079552"/>
+</object>
+<author>
+    <name>Everett Tayna
+    </name>
+    <uri>http://www.twitter.com/Everettyvibsx</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="0" followingCount="0"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/Everettyvibsx"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000159531666/3bd94f5400a5c6221d5ee0de0791bbd3_normal.jpeg"/>
+    <id>http://www.twitter.com/Everettyvibsx</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="0" followingCount="0"/>
+    <stats activityCount="44" upstreamId="id:twitter.com:1607474936"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/Everettyvibsx"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000159531666/3bd94f5400a5c6221d5ee0de0791bbd3_normal.jpeg"/>
+    <id>http://www.twitter.com/Everettyvibsx</id>
+    <location>Thailand</location>
+    <aboutMe>Student. Typical web fan. Social mediaholic. Incurable music lover. Internet fanatic. Hardcore communicator. Wannabe food evangelist</aboutMe>
+</actor>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="0" end="10">
+            <id>19580947</id>
+            <name>Ash Chagla</name>
+            <screen_name>AshChagla</screen_name>
+        </user_mention>
+    </user_mentions>
+    <urls>
+        <url start="11" end="33">
+            <original_url>http://t.co/vFKArD1I9Q</original_url>
+            <expanded_url>http://Ua2el.dos.try2do.com/Exxxoovlebp0k</expanded_url>
+        </url>
+    </urls>
+</twitter_entities>
+<urls>
+    <url>
+        <short_url>http://t.co/vFKArD1I9Q</short_url>
+        <long_url>http://Ua2el.dos.try2do.com/Exxxoovlebp0k</long_url>
+    </url>
+</urls>
+</entry>
+<entry>
+<id>tag:search.twitter.com,2005:358625910477434880</id>
+<published>2013-07-20T16:34:14+00:00</published>
+<updated>2013-07-20T16:34:14+00:00</updated>
+<summary type="html">@JagsGameDay @thisdjchill ... Yola The Great - Ain't Gon' Let Up</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/whoisryanmarks/statuses/358625910477434880"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:15Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<title>Ryan Marks posted a note on Twitter</title>
+<category term="StatusPosted" label="Status Posted"/>
+<category term="NotePosted" label="Note Posted"/>
+<verb>http://activitystrea.ms/schema/1.0/post</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625910477434880</id>
+    <content type="html">@JagsGameDay @thisdjchill ... Yola The Great - Ain't Gon' Let Up</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/whoisryanmarks/statuses/358625910477434880"/>
+</object>
+<author>
+    <name>Ryan Marks</name>
+    <uri>http://www.twitter.com/whoisryanmarks</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="49" followingCount="535"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/whoisryanmarks"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000102927358/036f0185b0f530a975794c9ab1a395ff_normal.jpeg"/>
+    <id>http://www.twitter.com/whoisryanmarks</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="49" followingCount="535"/>
+    <stats activityCount="135" upstreamId="id:twitter.com:1514386038"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/whoisryanmarks"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000102927358/036f0185b0f530a975794c9ab1a395ff_normal.jpeg"/>
+    <id>http://www.twitter.com/whoisryanmarks</id>
+    <location>jacksonville fl</location>
+</actor>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="0" end="12">
+            <id>462608165</id>
+            <name>Jaguars GameDay</name>
+            <screen_name>JagsGameDay</screen_name>
+        </user_mention>
+        <user_mention start="13" end="25">
+            <id>16528621</id>
+            <name>Chill Will</name>
+            <screen_name>thisdjchill</screen_name>
+        </user_mention>
+    </user_mentions>
+</twitter_entities>
+</entry>
+<entry>
+<id>tag:search.twitter.com,2005:358625910481620993</id>
+<published>2013-07-20T16:34:14+00:00</published>
+<updated>2013-07-20T16:34:14+00:00</updated>
+<summary type="html">RT @kennedy1121: Hey</summary>
+<link rel="alternate" type="text/html" href="http://twitter.com/serafinasottile/statuses/358625910481620993"/>
+<source>
+    <link rel="self" type="application/json" href="https://stream.twitter.com/1.1/statuses/sample.json"/>
+    <title>Twitter - Spritzer</title>
+    <updated>2013-07-20T16:34:15Z</updated>
+</source>
+<provider>
+    <name>Twitter</name>
+    <uri>http://www.twitter.com/</uri>
+    <icon/>
+</provider>
+<contributor>
+    <name>Becky Kennedy</name>
+    <uri>http://www.twitter.com/kennedy1121</uri>
+</contributor>
+<link rel="via" type="text/html" href="http://twitter.com/kennedy1121/statuses/310501864129040384"/>
+<title>serafina sottile shared: Becky Kennedy posted a note on Twitter</title>
+<category term="StatusShared" label="Status Shared"/>
+<category term="NoteShared" label="Note Shared"/>
+<verb>http://activitystrea.ms/schema/1.0/share</verb>
+<object>
+    <object-type>http://activitystrea.ms/schema/1.0/note</object-type>
+    <id>object:search.twitter.com,2005:358625910481620993</id>
+    <content type="html">RT @kennedy1121: Hey</content>
+    <link rel="alternate" type="text/html" href="http://twitter.com/serafinasottile/statuses/358625910481620993"/>
+</object>
+<author>
+    <name>serafina sottile</name>
+    <uri>http://www.twitter.com/serafinasottile</uri>
+</author>
+<author>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="73" followingCount="115"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/serafinasottile"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000150630999/d6aaf70a7bf1bf1b85f7e42456b1b933_normal.jpeg"/>
+    <id>http://www.twitter.com/serafinasottile</id>
+</author>
+<actor>
+    <object-type>http://activitystrea.ms/schema/1.0/person</object-type>
+    <friends followersCount="73" followingCount="115"/>
+    <stats activityCount="7" upstreamId="id:twitter.com:1567787072"/>
+    <link rel="alternate" type="text/html" length="0" href="http://www.twitter.com/serafinasottile"/>
+    <link rel="avatar" href="http://a0.twimg.com/profile_images/378800000150630999/d6aaf70a7bf1bf1b85f7e42456b1b933_normal.jpeg"/>
+    <id>http://www.twitter.com/serafinasottile</id>
+    <location>herning, denmark</location>
+    <aboutMe>Home Improvement Time is a industry-sponsored public information program focused on promoting home i</aboutMe>
+</actor>
+<twitter_entities>
+    <user_mentions>
+        <user_mention start="3" end="15">
+            <id>122694816</id>
+            <name>Becky Kennedy</name>
+            <screen_name>kennedy1121</screen_name>
+        </user_mention>
+    </user_mentions>
+</twitter_entities>
+</entry>
